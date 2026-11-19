@@ -36,8 +36,11 @@ def test_after_the_deadline_the_page_says_nothing_is_open(paths):
     html, _ = build(paths, date(2026, 11, 18))
     assert "Nothing is open right now." in html
     assert "All 1 subcommittee pages checked on November 16, 2026. Nothing new this week." in html
-    assert 'class="badge">Closed' in html
+    assert 'class="badge">Not open' in html
     assert 'href="deadlines.ics"' not in html  # no calendar button when nothing is open
+    # Nothing stale on the live page: no closed dates, emails, subject lines or old PDFs.
+    for stale in ["May 15, 2026", "legislativebranch@appro.senate.gov", "FY27 LegisBranch OWT", ".pdf", "at a glance"]:
+        assert stale not in html, stale
 
 
 def test_calendar_leaves_out_deadlines_that_have_passed(paths):
@@ -101,7 +104,17 @@ def test_preview_copies_the_csv_it_links_to(paths, tmp_path):
     check_all([SUB], healthy_site(), paths, T1)
     page = build_site([SUB], paths, tmp_path / "preview", date(2026, 5, 1), preview=True)
     assert (tmp_path / "preview" / "tracker.csv").exists()
-    assert "Preview." in page.read_text()
+    demo = page.read_text()
+    assert "Demo." in demo
+    assert 'href="../">Back to the current page' in demo
+    assert 'href="demo/"' not in demo
+
+
+def test_live_page_links_to_the_demo(paths):
+    check_all([SUB], healthy_site(), paths, T1)
+    html, _ = build(paths, date(2026, 11, 18))
+    assert 'href="demo/">Try the demo' in html
+    assert 'href="demo/">See how the page works while deadlines are open' in html  # in the "nothing open" message
 
 
 @pytest.mark.parametrize("text", ["Café, “quotes” and a very long subject line " * 3])

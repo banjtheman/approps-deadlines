@@ -274,12 +274,18 @@ def how_to_submit(item: Item) -> str:
     return f'<dl class="how">{cells}</dl>'
 
 
+def broken_flag(item: Item, showing_guidance: bool = True) -> str:
+    if item.status != "broken":
+        return ""
+    last = item.entry.get("last_ok", "")[:10]
+    tail = ""
+    if showing_guidance and last:
+        tail = f" Showing guidance from the last good check ({short_date(date.fromisoformat(last))})."
+    return f'<p class="flag flag-warn">{icon("alert")}<span><b>Couldn’t check this week.</b> {esc(item.problem)}.{tail}</span></p>'
+
+
 def notes_and_checks(item: Item) -> str:
-    out = ""
-    if item.status == "broken":
-        last = item.entry.get("last_ok", "")[:10]
-        tail = f" Showing guidance from the last good check ({short_date(date.fromisoformat(last))})." if last else ""
-        out += f'<p class="flag flag-warn">{icon("alert")}<span><b>Couldn’t check this week.</b> {esc(item.problem)}.{tail}</span></p>'
+    out = broken_flag(item)
     for c in plain_checks(item):
         out += f'<p class="flag">{icon("alert")}<span><b>Please check:</b> {esc(c)}</span></p>'
     for n in plain_notes(item):
@@ -326,31 +332,50 @@ def entry_html(item: Item, today: date) -> str:
 </article>"""
 
 
-def card_html(item: Item, today: date) -> str:
-    d = item.deadline
+NOT_OPEN = "No open call for written testimony right now."
+
+
+def card_html(item: Item, open_now: bool) -> str:
+    """One subcommittee. Only an open call shows dates and how to send; a closed one shows nothing stale."""
+    head = (
+        f'<p class="full">{esc(item.sub.chamber)} Subcommittee on {esc(item.sub.name)}</p>'
+    )
+    page_link = f'<p class="links"><a href="{esc(item.sub.page_url)}">Subcommittee page</a></p>'
     if item.status == "unchecked" or not item.entry:
-        state = '<span class="badge badge-warn">Not checked yet</span>'
-    elif d and d < today:
-        state = '<span class="badge">Closed</span>'
-    elif d:
-        state = '<span class="badge badge-open">Open</span>'
-    else:
-        state = '<span class="badge">No fixed date</span>'
+        return f"""
+<article class="card">
+  <header><h3>{esc(item.sub.label)}</h3><span class="badge badge-warn">Not checked yet</span></header>
+  {head}<p class="quiet">No guidance on file yet.</p>{broken_flag(item, showing_guidance=False)}{page_link}
+</article>"""
+    if not open_now:
+        return f"""
+<article class="card is-closed">
+  <header><h3>{esc(item.sub.label)}</h3><span class="badge">Not open</span></header>
+  {head}<p class="quiet">{NOT_OPEN}</p>{broken_flag(item, showing_guidance=False)}{page_link}
+</article>"""
+    d = item.deadline
+    badge = "Open" if d else "Open · rolling"
     attr = f' data-deadline="{d.isoformat()}"' if d else ""
     return f"""
 <article class="card"{attr}>
-  <header><h3>{esc(item.sub.label)}</h3>{state}</header>
-  <p class="full">{esc(item.sub.chamber)} Subcommittee on {esc(item.sub.name)}</p>
-  <p class="due">{esc(due_phrase(item)) if item.entry else "No guidance on file yet."}</p>
-  {how_to_submit(item) if item.entry else ""}
-  {notes_and_checks(item)}
-  {source_links(item)}
+  <header><h3>{esc(item.sub.label)}</h3><span class="badge badge-open">{badge}</span></header>
+  {head}
+  <p class="quiet" data-when-closed hidden>{NOT_OPEN}</p>
+  <div class="detail">
+    <p class="due">{esc(due_phrase(item))}</p>
+    {how_to_submit(item)}
+    {notes_and_checks(item)}
+    {source_links(item)}
+  </div>
 </article>"""
 
 
 def timeline(items: list[Item], fy: str, today: date) -> str:
     """The cycle at a glance: an SVG for wide screens plus a text list (phones, screen readers)."""
-    fixed = sorted((i for i in items if i.deadline and i.f.get("fiscal_year") == fy), key=lambda i: i.deadline or today)
+    fixed = sorted(
+        (i for i in items if i.deadline and i.deadline >= today and i.f.get("fiscal_year") == fy),
+        key=lambda i: i.deadline or today,
+    )
     rolling = [i for i in items if not i.deadline and i.entry and i.f.get("fiscal_year") == fy]
     if not fixed:
         return ""
@@ -405,11 +430,7 @@ def timeline(items: list[Item], fy: str, today: date) -> str:
                 f'<li><span class="tl-date">Rolling</span><span class="tl-name">{esc(item.sub.label)}</span>'
                 '<span class="tl-state">7 days after its hearing</span></li>'
             )
-    legend = (
-        '<p class="tl-legend" aria-hidden="true"><span class="key key-open"></span>Open'
-        '<span class="key key-closed"></span>Closed</p>'
-    )
-    return f'{legend}<div class="tl-chart">{"".join(svg)}</div><ol class="tl-list">{"".join(li)}</ol>'
+    return f'<div class="tl-chart">{"".join(svg)}</div><ol class="tl-list">{"".join(li)}</ol>'
 
 
 def change_log(history: list[dict], names: dict[str, str], limit: int = 12) -> str:
@@ -477,8 +498,9 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
     alerts = ""
     if preview:
         alerts += (
-            f'<p class="alert"><span class="sq" aria-hidden="true"></span><b>Preview.</b> '
-            f"This page pretends today is {esc(long_date(today))}, using the latest saved guidance.</p>"
+            f'<p class="alert"><span class="sq" aria-hidden="true"></span><b>Demo.</b> '
+            f"This is {esc(fy)} guidance, shown as it looked on {esc(long_date(today))}. "
+            'These dates are for demonstration. <a href="../">See what’s open now</a>.</p>'
         )
     if changed:
         who = ", ".join(esc(i.sub.label) for i in changed)
@@ -499,22 +521,22 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
         n = len(open_fixed)
         lede = f"{n} open deadline{'s' if n != 1 else ''}, soonest first."
     else:
-        past = sorted(d for d in (i.deadline for i in items if i.f.get("fiscal_year") == fy) if d)
-        posted = sorted(i.entry.get("pdf_last_modified", "") for i in items if i.entry.get("pdf_last_modified"))
-        span = f"They ran from {short_date(past[0])} to {short_date(past[-1])}." if past else ""
-        posted_txt = ""
-        if posted:
-            p = date.fromisoformat(posted[len(posted) // 2])
-            posted_txt = f" The current guidance files on the Senate site are dated {p:%B} {p.year}."
         coming = (
             f'<div class="empty">{art("empty", "empty-art")}<div><p class="empty-big">Nothing is open right now.</p>'
-            f"<p>All {esc(fy)} deadlines have passed. {esc(span)}{esc(posted_txt)} "
-            "When a subcommittee posts new guidance, it shows up here within a week, "
-            "flagged at the top of the page.</p></div></div>"
+            "<p>No Senate appropriations subcommittee is taking written testimony at the moment. "
+            "Every subcommittee’s page is checked each week; when one posts a new call for testimony, "
+            "it appears here with its deadline and exactly how to send it.</p>"
+            + ("" if preview else '<p><a href="demo/">See how the page works while deadlines are open</a>.</p>')
+            + "</div></div>"
         )
-        lede = "No open deadlines."
+        lede = "No open calls for testimony."
 
-    cards = "".join(card_html(i, today) for i in items)
+    def open_now(i: Item) -> bool:
+        if i.deadline:
+            return i.deadline >= today
+        return bool(open_fixed) and bool(i.entry) and i.f.get("fiscal_year") == fy
+
+    cards = "".join(card_html(i, open_now(i)) for i in items)
     actions = (
         f'<p class="actions"><a class="btn" href="deadlines.ics" download>{icon("calendar")}Add to calendar</a></p>'
         if open_fixed
@@ -522,7 +544,13 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
     )
     tl = timeline(items, fy, today)
     as_of_attr = f' data-as-of="{today.isoformat()}"' if preview else ""
-    title = "Appropriations testimony deadlines" + (" (preview)" if preview else "")
+    title = "Appropriations testimony deadlines" + (" (demo)" if preview else "")
+    demo_link = (
+        '<p><a href="../">Back to the current page</a></p>'
+        if preview
+        else '<p>Want to click around while deadlines are open? <a href="demo/">Try the demo</a>, '
+        "the same guidance shown as it looked mid-cycle.</p>"
+    )
     cycle_section = (
         f'<section id="cycle" aria-labelledby="h-cy"><div class="sechead"><h2 id="h-cy">{esc(fy)} at a glance</h2>'
         f"<p>One mark per written-testimony deadline.</p></div>{tl}</section>"
@@ -561,10 +589,11 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
   <section id="upcoming" aria-labelledby="h-up">
     <div class="sechead"><h2 id="h-up">Coming up</h2><p>{esc(lede)}</p></div>
     {coming}
+    {'<p class="quiet" data-none-left hidden>Nothing is open right now. This page updates every day.</p>' if upcoming else ""}
   </section>
   {cycle_section}
   <section id="all" aria-labelledby="h-all">
-    <div class="sechead"><h2 id="h-all">All subcommittees</h2><p>How each one takes testimony, from its latest guidelines.</p></div>
+    <div class="sechead"><h2 id="h-all">All subcommittees</h2><p>Which ones are taking written testimony right now.</p></div>
     <div class="cards">{cards}</div>
   </section>
   <section id="log" aria-labelledby="h-log">
@@ -578,6 +607,7 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
     <a href="https://www.appropriations.senate.gov/subcommittees">Senate Appropriations subcommittee pages</a>;
     a blank means the PDF didn’t say.</p>
     <p>Keeping your own tracker? <a href="tracker.csv" download>Download the full table as a spreadsheet</a>.</p>
+    {demo_link}
     <p class="fine">An independent volunteer project by Civic Tech DC for
     <a href="{PROPOSAL_URL}">Congressional Tech proposal IV.3</a>. Not affiliated with the U.S. Senate.</p>
   </div>
@@ -725,6 +755,9 @@ section{margin:var(--space-7) 0}
 .flag .ic{width:18px;height:18px;color:var(--color-warn);margin-top:2px}
 .flag b{color:var(--color-warn)}
 .flag-warn{background:var(--color-warn-bg);border:1px solid var(--color-warn);padding:var(--space-2) var(--space-3);border-radius:var(--radius)}
+.quiet{color:var(--color-ink-2);margin:0 0 var(--space-2)}
+.card.is-closed h3{color:var(--color-ink-2)}
+[hidden]{display:none!important}
 .note{font-size:15px;margin:var(--space-2) 0;color:var(--color-ink-2)}
 .links{font-size:14px;color:var(--color-muted);margin:var(--space-3) 0 0}
 .empty{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-4);align-items:center;padding:var(--space-6) 0 var(--space-2);max-width:48em}
@@ -807,9 +840,14 @@ JS = """
     var d=new Date(+p[0],+p[1]-1,+p[2]);
     var days=Math.round((d-today)/86400000);
     var c=el.querySelector('[data-count]');
-    if(c){c.textContent=days<0?'Closed':days===0?'Due today':days===1?'Due tomorrow':'In '+days+' days';}
-    if(days<0){el.classList.add('closed');}
+    if(c){c.textContent=days===0?'Due today':days===1?'Due tomorrow':'In '+days+' days';}
+    if(days>=0){return;}
+    if(el.classList.contains('entry')){el.hidden=true;return;}
+    var det=el.querySelector('.detail'),q=el.querySelector('[data-when-closed]'),b=el.querySelector('.badge');
+    if(det){det.hidden=true;} if(q){q.hidden=false;} if(b){b.textContent='Not open';b.className='badge';}
   });
+  var entries=document.querySelectorAll('.entry'),none=document.querySelector('[data-none-left]');
+  if(none&&entries.length&&[].every.call(entries,function(e){return e.hidden;})){none.hidden=false;}
   function fallbackCopy(text){var t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');
     t.style.position='absolute';t.style.left='-9999px';document.body.appendChild(t);t.select();
     try{document.execCommand('copy');}catch(e){}document.body.removeChild(t);return Promise.resolve();}

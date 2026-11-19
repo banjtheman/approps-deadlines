@@ -5,9 +5,11 @@ Appropriations subcommittees. It reports which ones changed and turns each guide
 tracker row you can paste into a Google Sheet.
 
 Each run also rebuilds **a simple web page for congressional staff**: what testimony is due soon and
-exactly how to send it, with copy buttons and an "Add to calendar" file. No spreadsheet needed.
+exactly how to send it, with copy buttons and an "Add to calendar" file. No spreadsheet needed. It is
+published on GitHub Pages at **https://banjtheman.github.io/approps-deadlines/**, and a
+[demo](https://banjtheman.github.io/approps-deadlines/demo/) shows it mid-cycle.
 
-![The staff page, previewed as if it were May 12, 2026](docs/page-preview.jpg)
+![The staff page as it looked during the FY2027 cycle (the demo)](docs/page-preview.jpg)
 
 This is the first piece of [Congressional Tech proposal IV.3, the Appropriations Notices & Deadlines
 Tracker](https://civictechdc.github.io/congressional-tech/proposals/IV.3/). That proposal was the top
@@ -65,13 +67,13 @@ uv run approps-deadlines --only senate-defense       # check just one (or a few)
 uv run approps-deadlines --delay 5                   # slower: 5 seconds between requests
 uv run approps-deadlines --verbose                   # print every request
 uv run approps-deadlines --page-only                 # rebuild the web page from saved data, no crawling
-uv run approps-deadlines --as-of 2026-05-12          # preview the page as if it were that date (writes preview/)
+uv run approps-deadlines --as-of 2026-05-12          # build the demo as if it were that date (writes output/demo/)
 uv run pytest                                        # run the tests (no network)
 ```
 
 Open `output/index.html` in any browser to see the page. Out of season (like right now, when every
 FY2027 deadline has passed) it says nothing is open. To show what staff will see during the cycle,
-use `--as-of` with a spring date and open `preview/index.html`.
+use `--as-of` with a spring date and open `output/demo/index.html`.
 
 No API keys are needed. If you add one later (for example, for AI parsing), put it in a `.env` file.
 `.env` is already listed in `.gitignore`.
@@ -81,6 +83,7 @@ No API keys are needed. If you add one later (for example, for AI parsing), put 
 | File | What it is | In git? |
 |---|---|---|
 | `output/index.html` | The page for staff: coming deadlines, how to send, the cycle at a glance, all 12 subcommittees, what changed. One file with the illustrations built in (fonts load from Google Fonts, with system fonts as the fallback offline) | yes |
+| `output/demo/` | The same page shown as if it were mid-cycle (date set in the workflow), for demos | yes |
 | `output/deadlines.ics` | Every deadline that's still open as a calendar event with a one-week reminder (Outlook, Google, Apple) | yes |
 | `output/tracker.csv` | One row per subcommittee, with the tracker's nine columns first, ready for Google Sheets | yes |
 | `data/reports/latest.md` | This run's report: updated yes/no, broken pages, rows needing review | yes |
@@ -160,7 +163,7 @@ shows when the Senate posted it (2026-04-21 for most).
 
 ## Weekly schedule
 
-**GitHub Actions (recommended).**
+**GitHub Actions (recommended).** The site is published from here too.
 [`.github/workflows/weekly-crawl.yml`](.github/workflows/weekly-crawl.yml) runs every Monday at
 14:17 UTC (9:17 a.m. Eastern in winter), and you can also start it from the Actions tab with
 *Run workflow*. Each run:
@@ -168,13 +171,14 @@ shows when the Senate posted it (2026-04-21 for most).
 1. Runs the tests.
 2. Crawls the 12 pages.
 3. Posts the report on the run's summary page.
-4. Commits the new history, reports and CSV back to the repo.
+4. Commits the new history, reports, page and CSV back to the repo. That commit is how the dated
+   history is kept.
+5. Publishes the `output/` folder (the page, the demo, the calendar file and the CSV) to GitHub Pages.
 
-That commit is how the dated history is kept.
+Two other triggers publish without crawling the Senate site: a daily refresh at 10:07 UTC, so a
+deadline leaves the live page within a day of passing, and every push to `main`. The demo date is
+`DEMO_DATE` at the top of the workflow.
 
-> The workflow hasn't run yet: it starts working once this repo is pushed to GitHub. Under
-> *Settings → Actions → General → Workflow permissions*, allow "Read and write permissions" so it
-> can commit.
 
 **Or cron, on any always-on machine:**
 
@@ -188,6 +192,10 @@ on that machine unless you commit and push it yourself.
 ## The page for staff
 
 It is built for people who aren't technical and don't have time:
+
+- **Only what's open.** The live page never shows a closed deadline. A subcommittee with no open call
+  just says "Not open", with no old dates, emails or subject lines to trip anyone up. The page is
+  rebuilt every day, and it also hides anything whose deadline has passed by the reader's own date.
 
 - **Coming up.** Each open deadline appears as a large date with a countdown ("In 3 days"). Under it,
   in plain words: who to email (one click opens an email with the subject line filled in), the exact
@@ -214,8 +222,6 @@ Built to be accessible and to work on a phone:
 
 ## What it doesn't do yet
 
-- **The page isn't hosted yet.** It's a file in `output/`. Putting it on GitHub Pages, so staff get a
-  link, is a small next step once the repo is on GitHub.
 - **Senate only.** The House subcommittee pages aren't covered yet.
 - **Text rules only.** Rules written from the 12 FY2027 Senate PDFs. A PDF in a new style may come
   back with blank fields flagged "Needs review" until someone adds a rule or AI parsing.

@@ -1,18 +1,31 @@
-name: Weekly crawl
+name: Weekly crawl and publish
 
 on:
   schedule:
-    # Mondays at 14:17 UTC (9:17 a.m. Eastern in winter, 10:17 a.m. in summer).
-    # An off-the-hour minute avoids GitHub's busiest scheduling slots.
+    # Crawl: Mondays at 14:17 UTC (9:17 a.m. Eastern in winter, 10:17 a.m. in summer).
+    # Off-the-hour minutes avoid GitHub's busiest scheduling slots.
     - cron: "17 14 * * 1"
-  workflow_dispatch: # also allow "Run workflow" by hand from the Actions tab
+    # Refresh: every day at 10:07 UTC, rebuild the page from saved data (no crawling)
+    # so a deadline drops off the live site within a day of passing.
+    - cron: "7 10 * * *"
+  workflow_dispatch: # "Run workflow" by hand from the Actions tab: crawls and publishes
+  push:
+    branches: [main] # a push only rebuilds and republishes the page from saved data; no crawling
 
 permissions:
-  contents: write # needed to commit the updated history back to the repo
+  contents: write # commit the updated history back to the repo
+  pages: write # publish the site to GitHub Pages
+  id-token: write # required by the Pages deploy
 
 concurrency:
   group: weekly-crawl
   cancel-in-progress: false
+
+env:
+  # The demo page shows the latest guidance as if it were this date, mid-cycle.
+  DEMO_DATE: "2026-05-12"
+  # Crawl on the Monday schedule or a manual run; every other trigger only rebuilds the page.
+  CRAWL: ${{ github.event_name == 'workflow_dispatch' || github.event.schedule == '17 14 * * 1' }}
 
 jobs:
   crawl:
@@ -30,14 +43,22 @@ jobs:
         run: uv run pytest -q
 
       - name: Crawl the 12 Senate subcommittee pages
+        if: env.CRAWL == 'true'
         run: uv run approps-deadlines
 
+      - name: Rebuild the page from saved data
+        if: env.CRAWL != 'true'
+        run: uv run approps-deadlines --page-only
+
+      - name: Build the mid-cycle demo page
+        run: uv run approps-deadlines --as-of "$DEMO_DATE"
+
       - name: Show the report on the run's summary page
-        if: always()
+        if: always() && env.CRAWL == 'true'
         run: cat data/reports/latest.md >> "$GITHUB_STEP_SUMMARY" || true
 
-      - name: Commit the new history and tracker CSV
-        if: always()
+      - name: Commit the new history, page and tracker CSV
+        if: always() && env.CRAWL == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -48,3 +69,19 @@ jobs:
             git commit -m "Weekly crawl $(date -u +%Y-%m-%d)"
             git push
           fi
+
+      - name: Package the site for GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: output
+
+  publish:
+    needs: crawl
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

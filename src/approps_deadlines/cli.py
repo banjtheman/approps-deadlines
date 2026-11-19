@@ -40,7 +40,7 @@ def main(argv: list[str] | None = None) -> int:
         "--as-of",
         type=date.fromisoformat,
         metavar="YYYY-MM-DD",
-        help="preview the page as if today were this date (writes to preview/, not output/; no crawling)",
+        help="build the demo page as if today were this date (writes to <output folder>/demo/; no crawling)",
     )
     args = ap.parse_args(argv)
 
@@ -64,8 +64,8 @@ def main(argv: list[str] | None = None) -> int:
     site_dir = args.output.parent
 
     if args.as_of:
-        page = build_site(subs, paths, Path("preview"), args.as_of, preview=True)
-        err(f"Preview as of {args.as_of}: {page}")
+        page = build_site(subs, paths, site_dir / "demo", args.as_of, preview=True)
+        err(f"Demo as of {args.as_of}: {page}")
         return 0
     if args.page_only:
         page = build_site(subs, paths, site_dir, now.date())
