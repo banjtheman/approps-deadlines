@@ -526,7 +526,12 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
             "<p>No Senate appropriations subcommittee is taking written testimony at the moment. "
             "Every subcommittee’s page is checked each week; when one posts a new call for testimony, "
             "it appears here with its deadline and exactly how to send it.</p>"
-            + ("" if preview else '<p><a href="demo/">See how the page works while deadlines are open</a>.</p>')
+            + (
+                ""
+                if preview
+                else "<p>Want to see how it works while calls for testimony are open?</p>"
+                '<p class="actions"><a class="btn btn-quiet" href="demo/">See the demo</a></p>'
+            )
             + "</div></div>"
         )
         lede = "No open calls for testimony."
@@ -718,6 +723,8 @@ h1{font:500 clamp(2.6rem,7vw,4.4rem)/1 var(--font-display);letter-spacing:-.02em
   text-decoration:none;font:600 16px/1 var(--font-body);border-radius:var(--radius);white-space:nowrap;transition:background-color var(--dur) var(--ease-out),border-color var(--dur) var(--ease-out)}
 .btn:hover{background:var(--color-accent);border-color:var(--color-accent)}
 .btn:active{transform:translateY(1px)}
+.btn-quiet{background:transparent;color:var(--color-ink)}
+.btn-quiet:hover{color:var(--color-paper)}
 section{margin:var(--space-7) 0}
 .sechead{border-bottom:1px solid var(--color-ink);margin-bottom:var(--space-1);padding-bottom:var(--space-2)}
 .sechead h2{font:500 1.8rem/1.2 var(--font-display);margin:0}

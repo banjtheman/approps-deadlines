@@ -114,7 +114,7 @@ def test_live_page_links_to_the_demo(paths):
     check_all([SUB], healthy_site(), paths, T1)
     html, _ = build(paths, date(2026, 11, 18))
     assert 'href="demo/">Try the demo' in html
-    assert 'href="demo/">See how the page works while deadlines are open' in html  # in the "nothing open" message
+    assert 'href="demo/">See the demo</a>' in html  # a button in the "nothing open" message
 
 
 @pytest.mark.parametrize("text", ["Café, “quotes” and a very long subject line " * 3])
