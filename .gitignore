@@ -1,0 +1,15 @@
+# Secrets: API keys go in .env, never in code or the README
+.env
+.env.*
+
+# Downloaded PDFs (large, re-fetched every run)
+downloads/
+
+# Python and uv
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS
+.DS_Store

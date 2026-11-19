@@ -1,0 +1,392 @@
+{
+  "senate-ag": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-20",
+      "deadline_text": "All material must be received no later than close of business, Wednesday, May 20, 2026.",
+      "delivery_address": "agri@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "",
+      "needs_review": [
+        "format: not found in PDF"
+      ],
+      "notes": [],
+      "page_limit": "4",
+      "subject_line": "FY27 AG OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_ag_fy27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_ag_fy27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_ag_fy27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_ag_fy27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/agriculture-rural-development-food-and-drug-administration-and-related-agencies",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "9a8d7fdc8061d7bea1a022844609d556303fa55420c4f9dc468d47044e28ad85",
+    "pdf_text_sha256": "adaac834d23885a88059859c50314b60b26d474ca916b61d02f93f2b7116ab75",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_ag_fy27.pdf",
+    "section_sha256": "4ddd6f16538545491e245910bdbb17c98a9616950983e1ea22798cb81ed78fc0",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_ag_fy27",
+    "subcommittee": "Agriculture, Rural Development, Food and Drug Administration, and Related Agencies"
+  },
+  "senate-cjs": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-22",
+      "deadline_text": "All material must be received no later than close of business, Friday, May 22, 2026.",
+      "delivery_address": "cjs@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [],
+      "notes": [],
+      "page_limit": "4",
+      "subject_line": "FY27 CJS OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_cjs_fy27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_cjs_fy27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_cjs_fy27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_cjs_fy27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/commerce-justice-science-and-related-agencies",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "aabab25e2a77546d70d5f3c648af6e72a550bfae5f3461fb7c2a468387b627aa",
+    "pdf_text_sha256": "70d78e74c7624d00ff0e8f8aa6bd1d65a42b2f43fab2f779013ee4c0a47778eb",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_cjs_fy27.pdf",
+    "section_sha256": "e7e08dba468e518f33d27ec157ab8225b88e68f3229bf3b48c9fce47e5099478",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_cjs_fy27",
+    "subcommittee": "Commerce, Justice, Science, and Related Agencies"
+  },
+  "senate-defense": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-06-18",
+      "deadline_text": "All material must be received no later than close of business on Thursday, June 18, 2026.",
+      "delivery_address": "def@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [],
+      "notes": [
+        "No outside-witness hearing scheduled; written testimony only."
+      ],
+      "page_limit": "4",
+      "subject_line": "FY27 DEF OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_def_fy271.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_def_fy271.pdf",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/defense",
+    "pdf_last_modified": "2026-04-27",
+    "pdf_sha256": "8b96f47025e9938c7367a2ef3cadcdeb6171ab8a972b4612a28e37229f39c356",
+    "pdf_text_sha256": "ad4cefa373406e2b468ec8e41955db3b9dfa5bb481abee0e49857b17f6b772f1",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_def_fy271.pdf",
+    "section_sha256": "fb1a26e5f7c10c0cb515e8af7b1e2a524fdb53097fef25464836277c1e0c398a",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_def_fy271.pdf",
+    "subcommittee": "Defense"
+  },
+  "senate-energy-water": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-04-23",
+      "deadline_text": "All material must be received no later than close of business, Thursday, April 23, 2026.",
+      "delivery_address": "ew@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [],
+      "notes": [
+        "No outside-witness hearing scheduled; written testimony only."
+      ],
+      "page_limit": "4",
+      "subject_line": "FY27 EW OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_ewd_fy_27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_ewd_fy_27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_ewd_fy_27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_ewd_fy_27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/energy-and-water-development",
+    "pdf_last_modified": "2026-04-22",
+    "pdf_sha256": "a40bc289e44d2311069c3e82ae213a2b7efa76fab8620303e1c5edabac58dab3",
+    "pdf_text_sha256": "7d10bf1a96433de201a45601a66ec43a6391a5b5518c7b6d4eb851467c29fe6f",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_ewd_fy_27.pdf",
+    "section_sha256": "538c33a65d722752476e0289285cda6a83e3a4abfad5ccf21e5c7b872af75273",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_ewd_fy_27",
+    "subcommittee": "Energy and Water Development"
+  },
+  "senate-fsgg": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-29",
+      "deadline_text": "All material must be received no later than close of business, Friday, May 29, 2026.",
+      "delivery_address": "finsec@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word (no PDF)",
+      "needs_review": [],
+      "notes": [],
+      "page_limit": "4",
+      "subject_line": "FY27 FSGG OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_fsgg_fy27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_fsgg_fy27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_fsgg_fy27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_fsgg_fy27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/financial-services-and-general-government",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "c7853744b857c15d4cd8e6d1208a784241bb8ece869baa0c9ce4a391b3f6a286",
+    "pdf_text_sha256": "54904bd1a9c697b353a3f530c2cc263ba88fe91d6887e38b624479c9187c75b6",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_fsgg_fy27.pdf",
+    "section_sha256": "f46592b3375545c9ff138d0c3ba088de210508f9ffed97987e97228d87e20235",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_fsgg_fy27",
+    "subcommittee": "Financial Services and General Government"
+  },
+  "senate-homeland": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-24",
+      "deadline_text": "All material must be received no later than close of business, Sunday, May 24, 2026.",
+      "delivery_address": "homelandsec@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [],
+      "notes": [
+        "No outside-witness hearing scheduled; written testimony only."
+      ],
+      "page_limit": "4",
+      "subject_line": "FY27 Homeland OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_homeland_fy_27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_homeland_fy_27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_homeland_fy_27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_homeland_fy_27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/homeland-security",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "df965185717a70c5e4beff997be04747dce23cee9af36dd9379184cc2fba58a4",
+    "pdf_text_sha256": "8d15a0346987b43cf32196412dd02320136310017127448c062cf896e32525e8",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_homeland_fy_27.pdf",
+    "section_sha256": "e43cd678c7ab9b6eb98dc23de25267373c3f4d82b026cfcba045e753cf631762",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_homeland_fy_27",
+    "subcommittee": "Homeland Security"
+  },
+  "senate-interior": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-15",
+      "deadline_text": "All material must be received no later than close of business, Friday, May 15, 2026.",
+      "delivery_address": "int@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [],
+      "notes": [],
+      "page_limit": "4",
+      "subject_line": "FY27 Int OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_int_fy27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_int_fy27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_int_fy27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_int_fy27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/interior-environment-and-related-agencies",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "39a41d606df1ec21a630868d52e0743a3bce9ce3f74f37a8565bb83b85285b49",
+    "pdf_text_sha256": "4aa53e689e73cea769d0cffbd221aba24615e096dfb44d746009c35327e97f52",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_int_fy27.pdf",
+    "section_sha256": "5cb724c09dc978625ab7d0bcb1d0fd3daaf6b672a22ef167635d75fdf72542b4",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_int_fy27",
+    "subcommittee": "Interior, Environment, and Related Agencies"
+  },
+  "senate-labor-hhs": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-22",
+      "deadline_text": "All material must be received no later than close of business, Friday, May 22, 2026.",
+      "delivery_address": "lhhs@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word (no PDF)",
+      "needs_review": [],
+      "notes": [],
+      "page_limit": "4",
+      "subject_line": "FY27 OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_lhhs_fy27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_lhhs_fy27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_lhhs_fy27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_lhhs_fy27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/labor-health-and-human-services-education-and-related-agencies",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "7ec29578bbeb53cff21b1a9dfed0e324526742d80b700614306e91df37f27c32",
+    "pdf_text_sha256": "fb7a9d1d2fb7fbe5f456810156c74d5e854df258a8ffa847883e8fa5446f1f89",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_lhhs_fy27.pdf",
+    "section_sha256": "dda63f4374634fd5082e1ad4840a0735f92f8e077ce364869a24d1181d4c3510",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_lhhs_fy27",
+    "subcommittee": "Labor, Health and Human Services, Education, and Related Agencies"
+  },
+  "senate-leg-branch": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-15",
+      "deadline_text": "xAll material must be received no later than close of business, Friday, May 15, 2026.",
+      "delivery_address": "legislativebranch@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [],
+      "notes": [
+        "No outside-witness hearing scheduled; written testimony only."
+      ],
+      "page_limit": "4",
+      "subject_line": "FY27 LegisBranch OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_leg_branch_fy_27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_leg_branch_fy_27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_leg_branch_fy_27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_leg_branch_fy_27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/legislative-branch",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "60eda715d5f26ce23b8402ba9ca4a2a0c9055c2603a180c8cc05501c2dde60be",
+    "pdf_text_sha256": "ac7aa71ea9476f524988fc6701c3dbe1d736d3cb602aa829735b9e726b269cbd",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_leg_branch_fy_27.pdf",
+    "section_sha256": "cbd150cfe3f412d7a8f8b79239e8fc9904eab87daaa6d3e59026b1dd8556825f",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_leg_branch_fy_27",
+    "subcommittee": "Legislative Branch"
+  },
+  "senate-milcon-va": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-05-15",
+      "deadline_text": "All material must be received no later than close of business, Friday, May 15, 2026.",
+      "delivery_address": "",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [
+        "delivery address: not found in PDF",
+        "subject line: not found in PDF"
+      ],
+      "notes": [
+        "No outside-witness hearing scheduled; written testimony only.",
+        "Policy: For outside witne ss testimony to be considered by the Subcommittee, it must be at the request of a personal office of a Member of the U.S."
+      ],
+      "page_limit": "4",
+      "subject_line": ""
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_mcva_fy_27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_mcva_fy_27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_mcva_fy_27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_mcva_fy_27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/military-construction-veterans-affairs-and-related-agencies",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "f683c81ccc50829a805df703350b13acf4cbe1ec5e2a83e0ef05be88e4f10ec6",
+    "pdf_text_sha256": "743a8c3d6a746852c3591bc896d498edef831234f88632886fac53dd83dadfa8",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_mcva_fy_27.pdf",
+    "section_sha256": "955c73f526467772c050bc25d37b02c686c46572833678f308355fc76efb2dd4",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_mcva_fy_27",
+    "subcommittee": "Military Construction, Veterans Affairs, and Related Agencies"
+  },
+  "senate-sfops": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "2026-06-30",
+      "deadline_text": "All material must be received no later than 5 pm, Tuesday, June 30, 2026.",
+      "delivery_address": "SFOPS@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word (no PDF)",
+      "needs_review": [],
+      "notes": [],
+      "page_limit": "4",
+      "subject_line": "FY27 SFOPS OWT"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_sfops_fy_27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_sfops_fy_27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_sfops_fy_27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_sfops_fy_27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/state-foreign-operations-and-related-programs",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "4adddc06e253ad58594b04b0f9aaa7f9a3b49e54c14cfabe33e4dbd89622810d",
+    "pdf_text_sha256": "4f8f021a3e060590f6787007253e0aacfe85a5d6247c825f0239a6c769405732",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_sfops_fy_27.pdf",
+    "section_sha256": "f30ee7d7339daa67958287864811af2070645ecaac576540a9ee580821816467",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_sfops_fy_27",
+    "subcommittee": "State, Foreign Operations, and Related Programs"
+  },
+  "senate-thud": {
+    "chamber": "Senate",
+    "fields": {
+      "deadline": "",
+      "deadline_text": "All material must be received by 5:00pm seven days after the respective Departmental budget hearing of interest.",
+      "delivery_address": "thud@appro.senate.gov",
+      "fiscal_year": "FY2027",
+      "format": "Word or WordPerfect (no PDF)",
+      "needs_review": [
+        "deadline: not a fixed date, see deadline text"
+      ],
+      "notes": [
+        "Deadline is relative, not a calendar date: All material must be received by 5:00pm seven days after the respective Departmental budget hearing of interest."
+      ],
+      "page_limit": "4",
+      "subject_line": "FY27 THUD Outside Witness Testimony \u2013 [Department]"
+    },
+    "first_seen": "2026-11-18",
+    "hops": [
+      "https://www.appropriations.senate.gov/download/owt_guidelines_thud_fy27",
+      "https://www.appropriations.senate.gov/download/owt_guidelines_thud_fy27&download=1",
+      "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_thud_fy27.pdf"
+    ],
+    "last_changed": "2026-11-18",
+    "last_ok": "2026-11-18T19:30:45-05:00",
+    "link_url": "https://www.appropriations.senate.gov/download/owt_guidelines_thud_fy27",
+    "page_url": "https://www.appropriations.senate.gov/subcommittees/transportation-housing-and-urban-development-and-related-agencies",
+    "pdf_last_modified": "2026-04-21",
+    "pdf_sha256": "695d02baebef134e63a6d034350cf3b88b98930a299153927238aceebf3b0a08",
+    "pdf_text_sha256": "f29f3c13273f580f80bae556aa96e122e44564ac6afb72cbfbd1aba32d952385",
+    "pdf_url": "https://www.appropriations.senate.gov/imo/media/doc/owt_guidelines_thud_fy27.pdf",
+    "section_sha256": "b5643b2c403210ef2d047cbded5fb7b4d9b17f6c8d37ea92291d042af739b7dc",
+    "section_text": "Submit Written Testimony\nhttps://www.appropriations.senate.gov/download/owt_guidelines_thud_fy27",
+    "subcommittee": "Transportation, Housing and Urban Development, and Related Agencies"
+  }
+}

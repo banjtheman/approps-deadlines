@@ -1,0 +1,23 @@
+[project]
+name = "approps-deadlines"
+version = "0.1.0"
+description = "Weekly crawler that spots changes to Senate appropriations outside-witness testimony guidelines"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pypdf>=4.0",
+    "requests>=2.31",
+]
+
+[project.scripts]
+approps-deadlines = "approps_deadlines.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
