@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import argparse
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from .fetch import PoliteFetcher
+from .site import build_site
 from .sources import SENATE_SUBCOMMITTEES
 from .tracker import Paths, check_all, render_report, save_report
 
@@ -34,6 +35,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--output", type=Path, default=Path("output/tracker.csv"), help="sheet-ready CSV path")
     ap.add_argument("--downloads", type=Path, default=Path("downloads"), help="where PDFs are saved (git-ignored)")
     ap.add_argument("-v", "--verbose", action="store_true", help="print every request")
+    ap.add_argument("--page-only", action="store_true", help="rebuild the web page and calendar from saved data; no crawling")
+    ap.add_argument(
+        "--as-of",
+        type=date.fromisoformat,
+        metavar="YYYY-MM-DD",
+        help="preview the page as if today were this date (writes to preview/, not output/; no crawling)",
+    )
     args = ap.parse_args(argv)
 
     subs = SENATE_SUBCOMMITTEES
@@ -51,17 +59,31 @@ def main(argv: list[str] | None = None) -> int:
     def err(msg: str) -> None:
         print(msg, file=sys.stderr, flush=True)
 
-    fetcher = PoliteFetcher(delay=args.delay, timeout=args.timeout, log=err if args.verbose else None)
     paths = Paths(data_dir=args.data_dir, output_csv=args.output, downloads_dir=args.downloads)
     now = _now()
+    site_dir = args.output.parent
 
+    if args.as_of:
+        page = build_site(subs, paths, Path("preview"), args.as_of, preview=True)
+        err(f"Preview as of {args.as_of}: {page}")
+        return 0
+    if args.page_only:
+        page = build_site(subs, paths, site_dir, now.date())
+        err(f"Web page: {page}\nCalendar: {site_dir / 'deadlines.ics'}")
+        return 0
+
+    fetcher = PoliteFetcher(delay=args.delay, timeout=args.timeout, log=err if args.verbose else None)
     err(f"Checking {len(only) if only else len(subs)} subcommittee page(s), one request every {args.delay:g}s...")
     rows = check_all(subs, fetcher, paths, now, progress=err, only=only)
     report = render_report(rows, now, request_count=fetcher.request_count)
     report_path = save_report(paths, report, now)
+    page = build_site(subs, paths, site_dir, now.date())
 
     print(report)
-    err(f"Report: {report_path}\nSheet-ready CSV: {args.output}\nHistory: {paths.history}")
+    err(
+        f"Report: {report_path}\nSheet-ready CSV: {args.output}\nWeb page: {page}\n"
+        f"Calendar: {site_dir / 'deadlines.ics'}\nHistory: {paths.history}"
+    )
     # Broken pages are reported, not fatal: exit 0 so a weekly job keeps its history.
     return 0
 

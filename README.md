@@ -4,6 +4,11 @@ A weekly crawler that watches the **outside-witness testimony guidelines** for a
 Appropriations subcommittees. It reports which ones changed and turns each guidelines PDF into a
 tracker row you can paste into a Google Sheet.
 
+Each run also rebuilds **a simple web page for congressional staff**: what testimony is due soon and
+exactly how to send it, with copy buttons and an "Add to calendar" file. No spreadsheet needed.
+
+![The staff page, previewed as if it were May 12, 2026](docs/page-preview.jpg)
+
 This is the first piece of [Congressional Tech proposal IV.3, the Appropriations Notices & Deadlines
 Tracker](https://civictechdc.github.io/congressional-tech/proposals/IV.3/). That proposal was the top
 priority from the June 2026 meeting with the American Governance Institute (AGI), which keeps this
@@ -59,8 +64,14 @@ uv run approps-deadlines --list                      # subcommittee ids
 uv run approps-deadlines --only senate-defense       # check just one (or a few)
 uv run approps-deadlines --delay 5                   # slower: 5 seconds between requests
 uv run approps-deadlines --verbose                   # print every request
+uv run approps-deadlines --page-only                 # rebuild the web page from saved data, no crawling
+uv run approps-deadlines --as-of 2026-05-12          # preview the page as if it were that date (writes preview/)
 uv run pytest                                        # run the tests (no network)
 ```
+
+Open `output/index.html` in any browser to see the page. Out of season (like right now, when every
+FY2027 deadline has passed) it says nothing is open. To show what staff will see during the cycle,
+use `--as-of` with a spring date and open `preview/index.html`.
 
 No API keys are needed. If you add one later (for example, for AI parsing), put it in a `.env` file.
 `.env` is already listed in `.gitignore`.
@@ -69,6 +80,8 @@ No API keys are needed. If you add one later (for example, for AI parsing), put 
 
 | File | What it is | In git? |
 |---|---|---|
+| `output/index.html` | The page for staff: coming deadlines, how to send, the cycle at a glance, all 12 subcommittees, what changed. One self-contained file | yes |
+| `output/deadlines.ics` | Every fixed deadline as a calendar event with a one-week reminder (Outlook, Google, Apple) | yes |
 | `output/tracker.csv` | One row per subcommittee, with the tracker's nine columns first, ready for Google Sheets | yes |
 | `data/reports/latest.md` | This run's report: updated yes/no, broken pages, rows needing review | yes |
 | `data/reports/<date_time>.md` | Every past report, by date and time | yes |
@@ -172,8 +185,37 @@ That commit is how the dated history is kept.
 Use the output of `which uv` for the uv path. `cron.log` is git-ignored. With cron, the history stays
 on that machine unless you commit and push it yourself.
 
+## The page for staff
+
+It is built for people who aren't technical and don't have time:
+
+- **Coming up.** Each open deadline appears as a large date with a countdown ("In 3 days"). Under it,
+  in plain words: who to email (one click opens an email with the subject line filled in), the exact
+  subject line, the file format and the page limit. Copy buttons sit next to the email address and
+  subject line.
+- **Rows that need a human.** These say so ("Please check: the PDF doesn't say which file format to
+  send"). MilCon-VA's member-office rule and THUD's rolling deadline are spelled out in plain
+  language.
+- **Warnings at the top.** A banner appears when a subcommittee posts new guidance, and another when
+  a page couldn't be reached that week.
+- **The rest of the page.** The cycle at a glance (a timeline on wide screens, a list on phones), all
+  12 subcommittees, and a plain log of every weekly check.
+- **For tracker keepers.** "Add to calendar" downloads every deadline. The footer links to the full
+  table as a spreadsheet for people like AGI who keep their own tracker.
+
+Built to be accessible and to work on a phone:
+
+- **Accessible.** Readable contrast in light and dark mode, a visible keyboard focus ring, a "skip
+  to deadlines" link, 44 px tap targets on touch screens, and no animation.
+- **Tested at phone widths.** Checked at 320 and 375 px with no sideways scrolling.
+- **Fonts.** Public Sans (the U.S. government's typeface) for text, and Newsreader for headings.
+- **Illustrations.** The two illustrations were generated with an AI image model (OpenAI's, through
+  the Codex CLI) and live in `src/approps_deadlines/assets/`.
+
 ## What it doesn't do yet
 
+- **The page isn't hosted yet.** It's a file in `output/`. Putting it on GitHub Pages, so staff get a
+  link, is a small next step once the repo is on GitHub.
 - **Senate only.** The House subcommittee pages aren't covered yet.
 - **Text rules only.** Rules written from the 12 FY2027 Senate PDFs. A PDF in a new style may come
   back with blank fields flagged "Needs review" until someone adds a rule or AI parsing.
@@ -185,7 +227,7 @@ on that machine unless you commit and push it yourself.
 - **No automatic Sheet or alerts.** It doesn't push to a Google Sheet or send alerts. The CSV is
   pasted by hand (or pulled with `IMPORTDATA`), and a `yes` shows up only in the report.
 - **No BillTrax calendar yet.**
-- **Hardcoded page list.** If the Senate renames a page, that page shows as broken (HTTP 404) until
+- **Hardcoded page list.** If the Senate renames a page, that page shows as broken (the Senate site answers "410 Gone") until
   someone updates [`sources.py`](src/approps_deadlines/sources.py).
 - **Unchecked against AGI.** The rows haven't been compared with AGI's hand-kept tracker yet.
 
@@ -201,6 +243,9 @@ src/approps_deadlines/
   crawl.py     page → testimony link → intermediate page(s) → PDF → text
   extract.py   text rules: fiscal year, deadline, format, page limit, address, subject
   tracker.py   fingerprints, change detection, history, CSV and report
+  site.py      the staff page (output/index.html), built from saved results
+  ics.py       the calendar file (output/deadlines.ics)
+  assets/      the page's two illustrations
   cli.py       the `approps-deadlines` command
 tests/         fake-website tests for every broken-page case, and the text rules
                against all 12 real FY2027 PDFs (text in tests/fixtures)

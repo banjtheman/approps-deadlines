@@ -18,39 +18,40 @@ class Subcommittee:
     chamber: str
     name: str
     page_url: str
+    short: str = ""  # display name for the web page, e.g. "Labor-HHS-Education"
+
+    @property
+    def label(self) -> str:
+        return self.short or self.name
 
 
-def _senate(id_: str, name: str, slug: str) -> Subcommittee:
-    return Subcommittee(id=f"senate-{id_}", chamber="Senate", name=name, page_url=SENATE_BASE + slug)
+def _senate(id_: str, name: str, slug: str, short: str) -> Subcommittee:
+    return Subcommittee(id=f"senate-{id_}", chamber="Senate", name=name, page_url=SENATE_BASE + slug, short=short)
 
 
 SENATE_SUBCOMMITTEES: list[Subcommittee] = [
     _senate(
         "ag",
         "Agriculture, Rural Development, Food and Drug Administration, and Related Agencies",
-        "agriculture-rural-development-food-and-drug-administration-and-related-agencies",
-    ),
-    _senate("cjs", "Commerce, Justice, Science, and Related Agencies", "commerce-justice-science-and-related-agencies"),
-    _senate("defense", "Defense", "defense"),
-    _senate("energy-water", "Energy and Water Development", "energy-and-water-development"),
-    _senate("fsgg", "Financial Services and General Government", "financial-services-and-general-government"),
-    _senate("homeland", "Homeland Security", "homeland-security"),
-    _senate("interior", "Interior, Environment, and Related Agencies", "interior-environment-and-related-agencies"),
+        "agriculture-rural-development-food-and-drug-administration-and-related-agencies", "Agriculture-FDA"),
+    _senate("cjs", "Commerce, Justice, Science, and Related Agencies", "commerce-justice-science-and-related-agencies", "Commerce-Justice-Science"),
+    _senate("defense", "Defense", "defense", "Defense"),
+    _senate("energy-water", "Energy and Water Development", "energy-and-water-development", "Energy and Water"),
+    _senate("fsgg", "Financial Services and General Government", "financial-services-and-general-government", "Financial Services"),
+    _senate("homeland", "Homeland Security", "homeland-security", "Homeland Security"),
+    _senate("interior", "Interior, Environment, and Related Agencies", "interior-environment-and-related-agencies", "Interior-Environment"),
     _senate(
         "labor-hhs",
         "Labor, Health and Human Services, Education, and Related Agencies",
-        "labor-health-and-human-services-education-and-related-agencies",
-    ),
-    _senate("leg-branch", "Legislative Branch", "legislative-branch"),
+        "labor-health-and-human-services-education-and-related-agencies", "Labor-HHS-Education"),
+    _senate("leg-branch", "Legislative Branch", "legislative-branch", "Legislative Branch"),
     _senate(
         "milcon-va",
         "Military Construction, Veterans Affairs, and Related Agencies",
-        "military-construction-veterans-affairs-and-related-agencies",
-    ),
-    _senate("sfops", "State, Foreign Operations, and Related Programs", "state-foreign-operations-and-related-programs"),
+        "military-construction-veterans-affairs-and-related-agencies", "MilCon-VA"),
+    _senate("sfops", "State, Foreign Operations, and Related Programs", "state-foreign-operations-and-related-programs", "State-Foreign Ops"),
     _senate(
         "thud",
         "Transportation, Housing and Urban Development, and Related Agencies",
-        "transportation-housing-and-urban-development-and-related-agencies",
-    ),
+        "transportation-housing-and-urban-development-and-related-agencies", "Transportation-HUD"),
 ]

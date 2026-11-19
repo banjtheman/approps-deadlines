@@ -14,3 +14,7 @@ __pycache__/
 
 # OS
 .DS_Store
+
+# Page previews made with --as-of
+preview/
+
