@@ -80,8 +80,8 @@ No API keys are needed. If you add one later (for example, for AI parsing), put 
 
 | File | What it is | In git? |
 |---|---|---|
-| `output/index.html` | The page for staff: coming deadlines, how to send, the cycle at a glance, all 12 subcommittees, what changed. One self-contained file | yes |
-| `output/deadlines.ics` | Every fixed deadline as a calendar event with a one-week reminder (Outlook, Google, Apple) | yes |
+| `output/index.html` | The page for staff: coming deadlines, how to send, the cycle at a glance, all 12 subcommittees, what changed. One file with the illustrations built in (fonts load from Google Fonts, with system fonts as the fallback offline) | yes |
+| `output/deadlines.ics` | Every deadline that's still open as a calendar event with a one-week reminder (Outlook, Google, Apple) | yes |
 | `output/tracker.csv` | One row per subcommittee, with the tracker's nine columns first, ready for Google Sheets | yes |
 | `data/reports/latest.md` | This run's report: updated yes/no, broken pages, rows needing review | yes |
 | `data/reports/<date_time>.md` | Every past report, by date and time | yes |
@@ -200,12 +200,12 @@ It is built for people who aren't technical and don't have time:
   a page couldn't be reached that week.
 - **The rest of the page.** The cycle at a glance (a timeline on wide screens, a list on phones), all
   12 subcommittees, and a plain log of every weekly check.
-- **For tracker keepers.** "Add to calendar" downloads every deadline. The footer links to the full
+- **For tracker keepers.** The calendar button downloads every deadline that's still open (it's hidden when nothing is open). The footer links to the full
   table as a spreadsheet for people like AGI who keep their own tracker.
 
 Built to be accessible and to work on a phone:
 
-- **Accessible.** Readable contrast in light and dark mode, a visible keyboard focus ring, a "skip
+- **Accessible.** Colors picked for WCAG AA contrast in light and dark mode (not yet formally audited), a visible keyboard focus ring, a "skip
   to deadlines" link, 44 px tap targets on touch screens, and no animation.
 - **Tested at phone widths.** Checked at 320 and 375 px with no sideways scrolling.
 - **Fonts.** Public Sans (the U.S. government's typeface) for text, and Newsreader for headings.

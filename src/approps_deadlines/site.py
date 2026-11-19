@@ -11,7 +11,7 @@ Everything that came from a PDF is HTML-escaped before it goes on the page.
 
 Design notes (frontend-design, Hallmark and ui-ux-pro-max guidance):
 editorial "docket" look on paper, Public Sans (the U.S. government's typeface)
-for body text, Newsreader for headings, IBM Plex Mono for dates. Mobile-first,
+for text and Newsreader for headings (system fonts if Google Fonts can't load). Mobile-first,
 OKLCH colour tokens, visible focus rings, skip link, 44px touch targets on
 touch screens, no decorative motion, and text alternatives for the timeline.
 """
@@ -22,7 +22,6 @@ import csv
 import html
 import re
 import shutil
-from collections import Counter
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -234,8 +233,9 @@ def format_plain(item: Item) -> str:
 
 
 def cycle_fy(items: list[Item]) -> str:
-    years = Counter(i.f.get("fiscal_year") for i in items if i.f.get("fiscal_year"))
-    return years.most_common(1)[0][0] if years else ""
+    """The newest fiscal year any subcommittee has posted: as soon as one posts FY2028, that's the cycle."""
+    years = [i.f.get("fiscal_year", "") for i in items if re.fullmatch(r"FY\d{4}", i.f.get("fiscal_year", ""))]
+    return max(years) if years else ""
 
 
 def countdown_text(d: date, today: date) -> str:
@@ -359,7 +359,7 @@ def timeline(items: list[Item], fy: str, today: date) -> str:
     start = first.replace(day=1)
     end = (last.replace(day=28) + timedelta(days=4)).replace(day=1)  # first day of the next month
     rows = fixed + rolling
-    W, label_w, right, top, rh = 860, 200, 16, 34, 30
+    W, label_w, right, top, rh = 880, 236, 16, 34, 30
     H = top + len(rows) * rh + 10
     span = (end - start).days
 
@@ -457,7 +457,7 @@ def status_sentence(total: int, reachable: int, changed: int, last_run: str) -> 
         return "Not checked yet."
     when = f"{dt:%B} {dt.day}, {dt.year}"
     pages = f"All {total} subcommittee pages" if reachable == total else f"{reachable} of {total} subcommittee pages"
-    news = "Nothing new this week." if not changed else f"{changed} posted new guidance this week."
+    news = "Nothing new this week." if not changed else f"{changed} subcommittee{'s' if changed > 1 else ''} posted new guidance this week."
     return f"{pages} checked on {esc(when)}. {news}"
 
 
@@ -490,7 +490,7 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
         who = ", ".join(esc(i.sub.label) for i in broken)
         alerts += (
             f'<p class="alert alert-warn" role="status"><span class="sq" aria-hidden="true"></span>'
-            f"<b>Couldn’t check {len(broken)} page(s) this week:</b> {who}. "
+            f"<b>Couldn’t check {len(broken)} page{'s' if len(broken) > 1 else ''} this week:</b> {who}. "
             "They show their last known guidance; confirm on the Senate site.</p>"
         )
 
@@ -515,6 +515,11 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
         lede = "No open deadlines."
 
     cards = "".join(card_html(i, today) for i in items)
+    actions = (
+        f'<p class="actions"><a class="btn" href="deadlines.ics" download>{icon("calendar")}Add to calendar</a></p>'
+        if open_fixed
+        else ""
+    )
     tl = timeline(items, fy, today)
     as_of_attr = f' data-as-of="{today.isoformat()}"' if preview else ""
     title = "Appropriations testimony deadlines" + (" (preview)" if preview else "")
@@ -546,7 +551,7 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
       <h1>Testimony deadlines</h1>
       <p class="dek">When each of the 12 Senate appropriations subcommittees accepts written testimony from the public, and exactly how to send it.</p>
       <p class="status-line">{icon("alert" if broken else "check")}<span>{status_sentence(len(items), reachable, len(changed), last_run)}</span></p>
-      <p class="actions"><a class="btn" href="deadlines.ics" download>{icon("calendar")}Add to calendar</a></p>
+      {actions}
     </div>
     <div class="mast-art">{art("header", "hero-art")}</div>
   </div>
@@ -583,11 +588,12 @@ def render_page(items: list[Item], history: list[dict], today: date, preview: bo
 """
 
 
-def calendar_events(items: list[Item]) -> list[dict]:
+def calendar_events(items: list[Item], today: date) -> list[dict]:
+    """Calendar events for deadlines that are still open (today or later)."""
     events = []
     for i in items:
         d = i.deadline
-        if not d:
+        if not d or d < today:
             continue
         f = i.f
         lines = [due_phrase(i) + "."]
@@ -624,7 +630,7 @@ def build_site(
     site_dir.mkdir(parents=True, exist_ok=True)
     page = site_dir / "index.html"
     page.write_text(render_page(items, history, today, preview=preview), encoding="utf-8")
-    (site_dir / "deadlines.ics").write_text(build_ics(calendar_events(items)), encoding="utf-8", newline="")
+    (site_dir / "deadlines.ics").write_text(build_ics(calendar_events(items, today)), encoding="utf-8", newline="")
     csv_path = site_dir / "tracker.csv"
     if preview and paths.output_csv.exists() and paths.output_csv.resolve() != csv_path.resolve():
         shutil.copyfile(paths.output_csv, csv_path)
