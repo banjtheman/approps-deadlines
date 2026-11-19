@@ -189,6 +189,29 @@ def test_broken_pages_are_reported_not_fatal(paths, case):
     assert [h["status"] for h in history] == ["ok", "broken", "ok"]
 
 
+def test_news_link_about_testimony_is_not_mistaken_for_the_button(paths):
+    page = f"""<html><body><h1>Legislative Branch</h1>
+      <div id="news"><a href="{SITE}/imo/media/doc/hearing.pdf">Hearing testimony of the Architect of the Capitol</a></div>
+      </body></html>"""
+    site = healthy_site()
+    site.routes[PAGE] = html(PAGE, page)
+    site.routes[f"{SITE}/imo/media/doc/hearing.pdf"] = pdf(f"{SITE}/imo/media/doc/hearing.pdf", guidelines_pdf())
+    row = run(site, paths, T1)
+    assert (row.status, row.updated) == ("broken", "unknown")
+    assert row.problem.startswith("testimony link:")
+
+
+def test_fallback_finds_the_button_if_the_block_markup_changes(paths):
+    page = """<html><body><section class="new-layout">
+      <a href="../../../download/owt_guidelines_leg_branch_fy_27">Submit Written Testimony</a>
+      </section></body></html>"""
+    site = healthy_site()
+    site.routes[PAGE] = html(PAGE, page)
+    row = run(site, paths, T1)
+    assert row.status == "ok"
+    assert any("page layout changed" in r for r in row.entry["fields"]["needs_review"])
+
+
 def test_broken_row_keeps_last_good_fields_in_csv(paths):
     run(healthy_site(), paths, T1)
     run(FakeSite({PAGE: FetchError("HTTP 500 Internal Server Error (page)")}), paths, T2)

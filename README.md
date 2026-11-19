@@ -123,12 +123,15 @@ The three flags are real gaps in the PDFs, not crawler errors:
   subject line.
 - **THUD:** testimony is due "seven days after the respective Departmental budget hearing".
 
-A broken page looks like this. This is a live test against a made-up address on the real site:
+A broken page looks like this. This is a live test (trimmed) against a made-up address on the real
+site and a host that doesn't exist. The healthy page in the same run still went through, and the
+command exited normally:
 
 ```
-## Broken pages (1)
+## Broken pages (2)
 
-- **Made-up subcommittee**: subcommittee page: HTTP 410 Gone (https://www.appropriations.senate.gov/subcommittees/no-such-subcommittee)
+- **Made-up subcommittee (real site, page doesn't exist)**: subcommittee page: HTTP 410 Gone (https://www.appropriations.senate.gov/subcommittees/no-such-subcommittee)
+- **Made-up host that can't resolve**: subcommittee page: could not connect (https://approps-deadlines-test.invalid/subcommittees/x)
 ```
 
 The tracker's columns in `output/tracker.csv` (extra columns left out):
@@ -163,10 +166,11 @@ That commit is how the dated history is kept.
 **Or cron, on any always-on machine:**
 
 ```cron
-17 9 * * 1  cd /path/to/approps-deadlines && /opt/homebrew/bin/uv run approps-deadlines >> data/cron.log 2>&1
+17 9 * * 1  cd /path/to/approps-deadlines && /opt/homebrew/bin/uv run approps-deadlines >> cron.log 2>&1
 ```
 
-Use the output of `which uv` for the uv path.
+Use the output of `which uv` for the uv path. `cron.log` is git-ignored. With cron, the history stays
+on that machine unless you commit and push it yourself.
 
 ## What it doesn't do yet
 

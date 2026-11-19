@@ -2,8 +2,9 @@
 .env
 .env.*
 
-# Downloaded PDFs (large, re-fetched every run)
+# Downloaded PDFs (large, re-fetched every run) and local cron logs
 downloads/
+*.log
 
 # Python and uv
 .venv/

@@ -115,13 +115,18 @@ def parse_page(html: str) -> _PageParser:
     return p
 
 
+_BUTTON_TEXT = re.compile(r"\b(?:written|submit)\s+testimony\b", re.I)
+
+
 def find_testimony_link(html: str, base_url: str) -> tuple[str | None, str, bool]:
     """Return (absolute link URL or None, fingerprint text of the block, block found?)."""
     p = parse_page(html)
     links = p.section_links
     if not links:
-        # The block's markup changed or is missing: fall back to any link that says "testimony".
-        links = [(h, t) for h, t in p.all_links if "testimony" in t.lower()]
+        # The block's markup changed or is missing: fall back to a link that reads like the
+        # button ("Submit Written Testimony"). Plain "testimony" is too loose; news and hearing
+        # links use it, and following one would report the wrong PDF as ok.
+        links = [(h, t) for h, t in p.all_links if _BUTTON_TEXT.search(t)]
     preferred = [(h, t) for h, t in links if "testimony" in t.lower()] or links
     link = urljoin(base_url, preferred[0][0]) if preferred else None
 
