@@ -1,12 +1,17 @@
 # Draft post for #congressional-tech (or a GitHub issue)
 
-> Fill in `<REPO LINK>` once the repo is pushed. Nothing here has been posted.
+> Nothing here has been posted.
 
 ---
 
 **Appropriations deadlines tracker (IV.3): weekly crawler for the 12 Senate subcommittees is working**
 
 At tonight's meetup we built the first piece of proposal IV.3, the top priority from the June meeting with AGI: https://civictechdc.github.io/congressional-tech/proposals/IV.3/
+
+**See it**
+- Live page (updated weekly, refreshed daily): https://banjtheman.github.io/approps-deadlines/
+- Demo (FY2027 guidance shown as it looked mid-cycle, since nothing is open right now): https://banjtheman.github.io/approps-deadlines/demo/
+- Code: https://github.com/banjtheman/approps-deadlines
 
 **What it does**
 - Visits each of the 12 Senate Appropriations subcommittee pages and follows the "Submit Written Testimony" link through the intermediate `/download/` page to the guidelines PDF.
@@ -24,7 +29,7 @@ At tonight's meetup we built the first piece of proposal IV.3, the top priority 
 
 **Run it**
 ```
-git clone <REPO LINK>
+git clone https://github.com/banjtheman/approps-deadlines
 cd approps-deadlines
 uv run approps-deadlines
 ```
@@ -34,6 +39,6 @@ Results land in `output/index.html` (the staff page), `output/deadlines.ics`, `o
 1. Check the rows against Daniel's hand-kept tracker, and get his column list.
 2. Add the House subcommittee pages.
 3. AI parsing as a fallback for PDFs the text rules can't read, especially when FY2028 guidance comes out in the spring.
-4. Host the staff page on GitHub Pages so staff get a link, and push the CSV into a Google Sheet automatically.
+4. Push the CSV into a Google Sheet automatically, and move the repo under the civictechdc org.
 5. Add an appropriations calendar tab in BillTrax (the .ics file is a start).
 6. Alert (email or Slack) when a page says "updated: yes".
