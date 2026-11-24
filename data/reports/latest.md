@@ -1,4 +1,4 @@
-# Appropriations testimony guidelines check, 2026-11-18 20:31 EST
+# Appropriations testimony guidelines check, 2026-11-23 20:42 EST
 
 Checked 12 subcommittee page(s): 0 updated, 12 unchanged, 0 first check, 0 broken. 46 requests.
 
